@@ -1,6 +1,6 @@
 ---
-id: torrentproject2
-name: TorrentProject2
+id: torrentproject2c
+name: TorrentProject2 CUSTOMA
 description: "TorrentProject2 is a Public torrent meta-search engine"
 language: en-US
 type: public
@@ -30,6 +30,9 @@ caps:
     book-search: [q]
 
 settings:
+  - name: utilsappend
+    type: text
+    label: Utils - append this to query
   - name: filter-verified
     type: checkbox
     label: "Only include verifed content in results"
@@ -70,6 +73,12 @@ search:
     t: "{{ .Keywords }}"
     orderby: "{{ if .Keywords }}{{ .Config.sort }}{{ else }}{{ end }}"
     safe: "{{ if and .Keywords .Config.filter-verified }}on{{ else }}{{ end }}"
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["S[0-9]{2}([^E]|$)", ""] # utils
+    - name: append
+      args: "{{ .Config.utilsappend }}"
 
   rows:
     selector: "#similarfiles div:has(a[href^=\"/t\"])"

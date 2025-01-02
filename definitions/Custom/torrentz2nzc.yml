@@ -1,6 +1,6 @@
 ---
-id: torrentz2nz
-name: Torrentz2nz
+id: torrentz2nzc
+name: Torrentz2nz CUSTOMA
 description: "Torrentz2nz is a Public torrent meta-search engine"
 language: en-US
 type: public
@@ -24,6 +24,9 @@ caps:
     movie-search: [q]
 
 settings:
+  - name: utilsappend
+    type: text
+    label: Utils - append this to query
   - name: info_category_8000
     type: info_category_8000
 
@@ -32,6 +35,12 @@ search:
     - path: search
   inputs:
     q: "{{ .Keywords }}"
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["S[0-9]{2}([^E]|$)", ""] # utils
+    - name: append
+      args: "{{ .Config.utilsappend }}"
 
   rows:
     selector: dl

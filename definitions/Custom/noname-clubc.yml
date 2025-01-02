@@ -1,13 +1,12 @@
 ---
-id: noname-club
-replaces:
-  - nnm-club
-name: NoNaMe Club
+id: noname-clubc
+name: NoNaMe Club CUSTOMA ONION
 description: "NoNaMe Club (NNM-Club) is a RUSSIAN Public Tracker for TV / MOVIES / MUSIC"
 language: ru-RU
 type: public
 encoding: windows-1251
 links:
+  - http://nnmclub2vvjqzjne6q4rrozkkkdmlvnrcsyes2bbkm7e5ut2aproy4id.onion/
   - https://nnmclub.to/
 legacylinks:
   - https://nnm-club.name/
@@ -729,6 +728,9 @@ caps:
   allowrawsearch: true
 
 settings:
+  - name: utilsappend
+    type: text
+    label: Utils - append this to query
   - name: stripcyrillic
     type: checkbox
     label: Strip Cyrillic Letters
@@ -759,7 +761,7 @@ search:
     - path: forum/tracker.php
       method: post
   inputs:
-    $raw: "{{ if .Categories }}{{ range .Categories }}f[]={{.}}&{{end}}{{ else }}f[]=-1{{ end }}"
+    $raw: "f[]=-1"
     o: "{{ .Config.sort }}"
     s: "{{ .Config.type }}"
     tm: -1
@@ -772,12 +774,16 @@ search:
     submit: "Поиск"
 
   keywordsfilters:
+    - name: re_replace
+      args: ["S[0-9]{2}([^E]|$)", ""] # utils
     - name: re_replace # S01 to сезон 1
       args: ["(?i)\\bS0*(\\d+)\\b", "сезон $1"]
     - name: re_replace # E02 to сери 1
       args: ["(?i)\\bE0*(\\d+)\\b", "сери $1"]
     - name: re_replace # S01E02 to сезон 1 сери 2
       args: ["(?i)\\bS0*(\\d+)E0*(\\d+)\\b", "сезон $1 сери $2"]
+    - name: append
+      args: "{{ .Config.utilsappend }}"
 
   rows:
     selector: table.forumline.tablesorter > tbody > tr:has(a[href^="viewtopic.php?t="]):has(a[href^="download.php?id="])

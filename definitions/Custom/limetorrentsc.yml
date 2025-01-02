@@ -1,6 +1,6 @@
 ---
-id: limetorrents
-name: LimeTorrents
+id: limetorrentsc
+name: LimeTorrents CUSTOMA
 description: "LimeTorrents is a Public general torrent index with mostly verified torrents"
 language: en-US
 type: public
@@ -8,6 +8,7 @@ encoding: UTF-8
 # changes to this indexer should also be made to limetorrentsclone
 links:
   - https://www.limetorrents.lol/
+  - https://limetorrents.unblockit.black/
   - https://limetorrents.unblockninja.com/
   - https://limetorrents.ninjaproxy1.com/
   - https://limetorrents.proxyninja.org/
@@ -15,10 +16,23 @@ links:
   - https://limetorrents.torrentbay.st/
   - https://limetorrents.torrentsbay.org/
 legacylinks:
+  - https://limetorrents.unblockit.asia/
+  - https://limetorrents.unblockit.mov/
+  - https://limetorrents.unblockit.rsvp/
+  - https://limetorrents.unblockit.vegas/
+  - https://limetorrents.unblockit.esq/
+  - https://limetorrents.unblockit.zip/
+  - https://limetorrents.unblockit.foo/
+  - https://limetorrents.unblockit.ing/
   - https://limetorrents.mrunblock.bond/
   - https://limetorrents.nocensor.cloud/
+  - https://limetorrents.unblockit.date/
+  - https://limetorrents.unblockit.dad/
+  - https://limetorrents.unblockit.africa/
+  - https://limetorrents.unblockit.casa/
+  - https://limetorrents.unblockit.sbs/
+  - https://limetorrents.unblockit.ong/
   - https://limetorrents.abcproxy.org/
-  - https://limetorrents.unblockit.download/
 
 caps:
   categorymappings:
@@ -39,6 +53,9 @@ caps:
     book-search: [q]
 
 settings:
+  - name: utilsappend
+    type: text
+    label: Utils - append this to query
   - name: downloadlink
     type: select
     label: Download link
@@ -84,6 +101,8 @@ search:
   keywordsfilters:
     - name: re_replace
       args: ["S[0-9]{2}([^E]|$)", ""] # remove season tag without episode
+    - name: append
+      args: "{{ .Config.utilsappend }}"
 
   rows:
     selector: .table2 > tbody > tr[bgcolor]

@@ -1,6 +1,6 @@
 ---
-id: torlock
-name: Torlock
+id: torlockc
+name: Torlock CUSTOMA
 description: "Torlock is a torrent search site that lists verified torrents only for TV series and movies"
 language: en-US
 type: public
@@ -8,13 +8,27 @@ encoding: UTF-8
 requestDelay: 2
 links:
   - https://www.torlock.com/
+  - https://www.torlock2.com/
+  - https://torlock.unblockit.black/
 legacylinks:
   - https://torlock.com/
   - https://www.torlock.icu/
+  - https://torlock.unblockit.asia/
+  - https://torlock.unblockit.mov/
+  - https://torlock.unblockit.rsvp/
+  - https://torlock.unblockit.vegas/
+  - https://torlock.unblockit.esq/
+  - https://torlock.unblockit.zip/
+  - https://torlock.unblockit.foo/
+  - https://torlock.unblockit.ing/
   - https://torlock.nocensor.cloud/
   - https://torlock.mrunblock.bond/
-  - https://torlock.unblockit.download/
-  - https://www.torlock2.com/ # 400 Bad Request No required SSL certificate was sent
+  - https://torlock.unblockit.date/
+  - https://torlock.unblockit.dad/
+  - https://torlock.unblockit.africa/
+  - https://torlock.unblockit.casa/
+  - https://torlock.unblockit.sbs/
+  - https://torlock.unblockit.ong/
 
 caps:
   # dont forget to update the search fields category case block
@@ -39,6 +53,9 @@ caps:
     book-search: [q]
 
 settings:
+  - name: utilsappend
+    type: text
+    label: Utils - append this to query
   - name: sort
     type: select
     label: Sort requested from site (only works for search with keywords)
@@ -82,9 +99,13 @@ search:
     - path: "{{ if .Keywords }}/image/torrents/{{ .Keywords }}.html?sort={{ .Config.sort }}&order={{ .Config.type }}{{else}}/images/1/{{ .Config.sort }}/{{ .Config.type }}.html{{end}}"
       categories: [IMAGES]
   keywordsfilters:
+    - name: re_replace
+      args: ["S[0-9]{2}([^E]|$)", ""] # utils
     - name: tolower
     - name: re_replace
       args: ["[^a-zA-Z0-9]+", "-"]
+    - name: append
+      args: "{{ .Config.utilsappend }}"
 
   rows:
     selector: table > tbody > tr:has(td:has(div:has(a[href^="/torrent/"])))

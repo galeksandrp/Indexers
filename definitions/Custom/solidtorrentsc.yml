@@ -1,16 +1,17 @@
 ---
-id: bitsearch
-name: BitSearch
-description: "BitSearch is a Public torrent meta-search engine"
+id: solidtorrentsc
+name: Solid Torrents CUSTOMA
+description: "Solid Torrents is a Public torrent meta-search engine"
 language: en-US
 type: public
 encoding: UTF-8
 requestDelay: 2
 links:
-  - https://bitsearch.to/
+  - https://solidtorrents.to/
 legacylinks:
-  - https://bitsearch.nocensor.cloud/
-  - https://bitsearch.mrunblock.bond/
+  - https://solidtorrents.net/
+  - https://solidtorrents.eu/
+  - https://solidtorrents.nocensor.cloud/
 
 caps:
   categories:
@@ -36,7 +37,7 @@ caps:
     "Other/Program": PC/0day
     "Other/Sourcecode": PC
     "Other/Source Code": PC
-    "Other/Video": Other
+    "Other/Video": TV
     Softwares: PC/0day
     "Softwares/Windows": PC/0day
     TV: TV
@@ -51,6 +52,9 @@ caps:
     book-search: [q]
 
 settings:
+  - name: utilsappend
+    type: text
+    label: Utils - append this to query
   - name: prefer_magnet_links
     type: checkbox
     label: Prefer Magnet Links
@@ -70,14 +74,10 @@ settings:
     options:
       desc: desc
       asc: asc
-  - name: info_category_8000
-    type: info
-    label: About BitSearch Categories
-    default: BitSearch does not properly return categories in its search results for some releases.</br>To add to your Apps' Torznab indexer, you will need to include the 8000(Other) category.
 
 search:
   paths:
-     # https://bitsearch.to/search?q=&sort=date&order=desc
+    # https://solidtorrents.net/search?q=&sort=date&order=desc
     - path: search
   inputs:
     q: "{{ .Keywords }}"
@@ -88,10 +88,12 @@ search:
 
   keywordsfilters:
     - name: re_replace
-      args: ["\\.", " "]
+      args: ["S[0-9]{2}([^E]|$)", ""] # utils
+    - name: append
+      args: "{{ .Config.utilsappend }}"
 
   rows:
-    selector: div.search-result:has(a.dl-torrent), li.search-result:has(a.dl-torrent)
+    selector: li.search-result:has(a[class="dl-torrent"])
 
   fields:
     category:
@@ -102,7 +104,7 @@ search:
       selector: h5 a
       attribute: href
     download_optional:
-      selector: a.dl-torrent
+      selector: a[class="dl-torrent"]
       attribute: href
       optional: true
     download:

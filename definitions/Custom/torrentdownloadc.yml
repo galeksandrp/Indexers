@@ -1,16 +1,31 @@
 ---
-id: torrentdownload
-name: TorrentDownload
+id: torrentdownloadc
+name: TorrentDownload CUSTOMA
 description: "TorrentDownload is a Public torrent meta-search engine"
 language: en-US
 type: public
 encoding: UTF-8
 links:
   - https://www.torrentdownload.info/
+  - https://torrentdownload.unblockit.black/
 legacylinks:
+  - https://torrentdownload.unblockit.asia/
+  - https://torrentdownload.unblockit.mov/
+  - https://torrentdownload.mrunblock.life/
+  - https://torrentdownload.unblockit.rsvp/
+  - https://torrentdownload.unblockit.vegas/
+  - https://torrentdownload.unblockit.esq/
+  - https://torrentdownload.unblockit.zip/
+  - https://torrentdownload.unblockit.foo/
+  - https://torrentdownload.unblockit.ing/
   - https://torrentdownload.mrunblock.bond/
   - https://torrentdownload.nocensor.cloud/
-  - https://torrentdownload.unblockit.download/
+  - https://torrentdownload.unblockit.date/
+  - https://torrentdownload.unblockit.dad/
+  - https://torrentdownload.unblockit.africa/
+  - https://torrentdownload.unblockit.casa/
+  - https://torrentdownload.unblockit.sbs/
+  - https://torrentdownload.unblockit.ong/
 
 caps:
   categorymappings:
@@ -85,6 +100,9 @@ caps:
     book-search: [q]
 
 settings:
+  - name: utilsappend
+    type: text
+    label: Utils - append this to query
   - name: sort
     type: select
     label: Sort requested from site (Applies only to Search with Keywords)
@@ -101,6 +119,12 @@ download:
 search:
   paths:
     - path: "{{ if .Keywords }}search{{ re_replace .Config.sort \"_\" \"\" }}?q={{ .Keywords }}{{ else }}/{{ end }}"
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["S[0-9]{2}([^E]|$)", ""] # utils
+    - name: append
+      args: "{{ .Config.utilsappend }}"
 
   rows:
     selector: table.table2 > tbody > tr:has(span.smallish)

@@ -1,6 +1,6 @@
 ---
-id: idope
-name: iDope
+id: idopec
+name: iDope CUSTOMA
 description: "iDope is a Public torrent search engine presenting direct magnet links"
 language: en-US
 type: public
@@ -41,6 +41,9 @@ caps:
     book-search: [q]
 
 settings:
+  - name: utilsappend
+    type: text
+    label: Utils - append this to query
   - name: itorrents-links
     type: checkbox
     label: Add download links via itorrents.org
@@ -67,8 +70,14 @@ search:
   paths:
     # present trending results if there are no search parms supplied
     # sort torrent-list by age in descending order
-    - path: "{{ if .Keywords }}torrent-list/{{ .Keywords }}?o={{ .Config.sort }}&c={{ range .Categories }}{{.}}{{end}}{{ else }}browse.html{{ end }}"
-    - path: "{{ if .Keywords }}torrent-list/{{ .Keywords }}?p=2&o={{ .Config.sort }}&c={{ range .Categories }}{{.}}{{end}}{{ else }}browse.html?&p=2{{ end }}"
+    - path: "{{ if .Keywords }}torrent-list/{{ .Keywords }}?o={{ .Config.sort }}{{ else }}browse.html{{ end }}"
+    - path: "{{ if .Keywords }}torrent-list/{{ .Keywords }}?p=2&o={{ .Config.sort }}{{ else }}browse.html?&p=2{{ end }}"
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["S[0-9]{2}([^E]|$)", ""] # utils
+    - name: append
+      args: "{{ .Config.utilsappend }}"
 
   rows:
     selector: div.resultdiv

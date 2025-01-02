@@ -1,6 +1,6 @@
 ---
-id: 1337x
-name: 1337x
+id: 1337xc
+name: 1337x CUSTOMA ONION
 description: "1337X is a Public torrent site that offers verified torrent downloads"
 language: en-US
 type: public
@@ -8,12 +8,14 @@ encoding: UTF-8
 requestDelay: 2
 # get status and news on domains at the official site https://1337x-status.org/
 links:
+  - http://l337xdarkkaqfwzntnfk5bmoaroivtl6xsbatabvlb52umg6v3ch44yd.onion/
   - https://1337x.to/
   - https://1337x.st/
   - https://x1337x.ws/
   - https://x1337x.eu/
   - https://x1337x.se/
   - https://x1337x.cc/
+  - https://1337x.unblockit.black/
   - https://1337x.unblockninja.com/
   - https://1337x.ninjaproxy1.com/
   - https://1337x.proxyninja.org/
@@ -23,10 +25,24 @@ links:
 legacylinks:
   - https://1337x.is/
   - https://1337x.gd/
+  - https://1337x.mrunblock.life/
+  - https://1337x.unblockit.asia/
+  - https://1337x.unblockit.mov/
+  - https://1337x.unblockit.rsvp/
+  - https://1337x.unblockit.vegas/
+  - https://1337x.unblockit.esq/
+  - https://1337x.unblockit.zip/
+  - https://1337x.unblockit.foo/
+  - https://1337x.unblockit.ing/
   - https://1337x.mrunblock.bond/
+  - https://1337x.unblockit.date/
+  - https://1337x.unblockit.dad/
+  - https://1337x.unblockit.africa/
+  - https://1337x.unblockit.casa/ # 502
+  - https://1337x.unblockit.sbs/ # 502
+  - https://1337x.unblockit.ong/ # 502
   - https://1337x.abcproxy.org/
   - https://1337x.so/
-  - https://1337x.unblockit.download/
 
 caps:
   categorymappings:
@@ -120,6 +136,9 @@ caps:
   allowrawsearch: true
 
 settings:
+  - name: utilsappend
+    type: text
+    label: Utils - append this to query
   - name: info_flaresolverr
     type: info_flaresolverr
   - name: downloadlink
@@ -173,8 +192,12 @@ search:
     - path: "{{ if or .Query.Album .Query.Artist .Keywords }}sort-search{{ else }}cat/Other{{ end }}{{ if or .Query.Album .Query.Artist }}/{{ or .Query.Album .Query.Artist }}{{ else }}/{{ .Keywords }}{{ end }}{{ if or .Query.Album .Query.Artist .Keywords }}/{{ else }}{{ end }}{{ .Config.sort }}/{{ .Config.type }}/{{ if or .Query.Album .Query.Artist .Keywords }}4{{ else }}1{{ end }}/"
 
   keywordsfilters:
+    - name: re_replace
+      args: ["S[0-9]{2}([^E]|$)", ""] # utils
     - name: re_replace # daily standard S2023 > 2023
       args: ["\\bS(20\\d{2})\\b", "$1"]
+    - name: append
+      args: "{{ .Config.utilsappend }}"
 
   rows:
     selector: tr:has(a[href^="/torrent/"])
