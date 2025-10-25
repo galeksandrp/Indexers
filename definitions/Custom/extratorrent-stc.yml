@@ -1,6 +1,6 @@
 ---
-id: extratorrent-st
-name: ExtraTorrent.st
+id: extratorrent-stc
+name: ExtraTorrent.st CUSTOMB
 description: "ExtraTorrent.st is a Public tracker for MOVIE / TV / GENERAL magnets"
 language: en-US
 type: public
@@ -76,6 +76,9 @@ caps:
     book-search: [q]
 
 settings:
+  - name: utilsappend
+    type: text
+    label: Utils - append this to query
   - name: info_flaresolverr
     type: info_flaresolverr
 
@@ -85,7 +88,11 @@ search:
     - path: "{{ if .Keywords }}search/?srt=added&order=desc&search={{ .Keywords }}&new=1&x=0&y=0{{ else }}{{ end }}"
   keywordsfilters:
     - name: re_replace
+      args: ["S[0-9]{2}([^E]|$)", ""] # utils
+    - name: re_replace
       args: ["[\\s]+", "."]
+    - name: append
+      args: "{{ .Config.utilsappend }}"
 
   rows:
     selector: tr[class^="tl"]:has(a[href^="magnet:?xt="])

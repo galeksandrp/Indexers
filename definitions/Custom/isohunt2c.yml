@@ -1,6 +1,6 @@
 ---
-id: isohunt2
-name: Isohunt2
+id: isohunt2c
+name: Isohunt2 CUSTOMB
 description: "Isohunt2 is a Public torrent search engine for MOVIES / TV / GENERAL"
 language: en-US
 type: public
@@ -34,6 +34,9 @@ caps:
     book-search: [q]
 
 settings:
+  - name: utilsappend
+    type: text
+    label: Utils - append this to query
   - name: category
     type: select
     label: Category Filter
@@ -74,6 +77,12 @@ search:
     iht: "{{ .Config.category }}"
     age: 0
     Torrent_sort: "{{ .Config.sort }}"
+
+  keywordsfilters:
+    - name: re_replace
+      args: ["S[0-9]{2}([^E]|$)", ""] # utils
+    - name: append
+      args: "{{ .Config.utilsappend }}"
 
   headers:
     User-Agent: ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36 Edg/115.0.1901.203"]

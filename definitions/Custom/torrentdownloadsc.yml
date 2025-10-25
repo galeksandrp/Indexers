@@ -1,6 +1,6 @@
 ---
-id: torrentdownloads
-name: Torrent Downloads
+id: torrentdownloadsc
+name: Torrent Downloads CUSTOMB
 description: "Torrent Downloads (TD) is a Public torrent site for all kinds of content"
 language: en-US
 type: public
@@ -40,6 +40,9 @@ caps:
   allowrawsearch: true
 
 settings:
+  - name: utilsappend
+    type: text
+    label: Utils - append this to query
   - name: downloadlink
     type: select
     label: Download link
@@ -71,13 +74,17 @@ search:
     - path: "{{ if .Keywords }}/search/{{ else }}/today/{{ end }}"
       followredirect: true
   inputs:
-    $raw: "{{ range .Categories }}s_cat={{.}}&{{end}}"
+    $raw: ""
     search: "{{ .Keywords }}"
 
   keywordsfilters:
     - name: re_replace
+      args: ["S[0-9]{2}([^E]|$)", ""] # utils
+    - name: re_replace
       args: ["\\W+", " "]
     - name: trim
+    - name: append
+      args: "{{ .Config.utilsappend }}"
 
   rows:
     selector: div.inner_container > div:has(p:has(a[href^="/torrent/"])):not(:has(span.__cf_email__))
